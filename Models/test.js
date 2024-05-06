@@ -22,9 +22,9 @@ mongoose.connect('mongodb://localhost/Blog');
 //         console.log(error)
 //     })
 
-var id = "663948f108d89c48bdfa51c2";
+var id = "66394a6bfefd43a913c6c8d8";
 
-BlogPost.findByIdAndUpdate(id,{ body: 'test body hehehe updated' })
+BlogPost.findByIdAndDelete(id)
     .then((result) => {
         console.log(result)
     })
