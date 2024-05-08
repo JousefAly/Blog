@@ -11,15 +11,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
-mongoose.connect('mongodb://localhost/Blog', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost/Blog');
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 
 
-app.get('/', (req, res) => {
-    res.render('index');
+app.get('/', async (req, res) => {
+    const blogPosts = await BlogPost.find({});
+    console.log(blogPosts);
+    
+    res.render('index', {
+        blogPosts
+    });
 })
 
 app.get('/about', (req, res) => {
@@ -28,32 +33,37 @@ app.get('/about', (req, res) => {
 app.get('/contact', (req, res) => {
     res.render('contact');
 })
-app.get('/post', (req, res) => {
-    res.render('post');
+
+app.get('/post/:id', async(req, res) => {
+    console.log(req.params.id)
+    const post = await BlogPost.findById(req.params.id)
+    res.render('post',{
+        post
+    });
 })
 
 app.get('/posts/new', (req, res) => {
     res.render('create');
 })
 
-app.post('/posts/store', (req, res) => {
-    console.log('received request body from html form.  ', req.body)
+app.post('/posts/store', async (req, res) => {
+    console.log('received request body from html form.  ', req.body);
 
-    setTimeout(() => {
-        BlogPost.create(req.body)
+    BlogPost.create(req.body)
         .then((result) => {
-
-            console.log('created Blog Post', result)
+            console.log('result from create: ', result)
         })
         .catch((error) => {
-            console.log(error)
+
+            console.log(error);
+            return res.status(500).send('Error occurred while creating blog post.');
         })
-    }, 10000)
 
-
-console.log('redirecting now')
+    console.log('redirecting now')
     res.redirect('/')
+
 })
+
 
 app.listen(4000, () => {
     console.log('App listening on port 4000')
