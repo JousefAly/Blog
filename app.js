@@ -5,6 +5,10 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const BlogPost = require('./Models/BlogPost');
 
+const NewPostController = require('./Controllers/NewPost');
+const NewUserController = require('./Controllers/NewUserController');
+const StoreUserController = require('./controllers/StoreUserController');
+
 const app = new express();
 
 app.use(bodyParser.json());
@@ -17,11 +21,13 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 
+app.get('/auth/register', NewUserController);
+app.post('/users/register', StoreUserController);
 
 app.get('/', async (req, res) => {
     const blogPosts = await BlogPost.find({});
     console.log(blogPosts);
-    
+
     res.render('index', {
         blogPosts
     });
@@ -34,17 +40,15 @@ app.get('/contact', (req, res) => {
     res.render('contact');
 })
 
-app.get('/post/:id', async(req, res) => {
+app.get('/post/:id', async (req, res) => {
     console.log(req.params.id)
     const post = await BlogPost.findById(req.params.id)
-    res.render('post',{
+    res.render('post', {
         post
     });
 })
 
-app.get('/posts/new', (req, res) => {
-    res.render('create');
-})
+app.get('/posts/new', NewPostController);
 
 app.post('/posts/store', async (req, res) => {
     console.log('received request body from html form.  ', req.body);
