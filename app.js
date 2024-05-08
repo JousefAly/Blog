@@ -37,17 +37,21 @@ app.get('/posts/new', (req, res) => {
 })
 
 app.post('/posts/store', (req, res) => {
-    console.log(req.body)
+    console.log('received request body from html form.  ', req.body)
 
-    BlogPost.create(req.body)
+    setTimeout(() => {
+        BlogPost.create(req.body)
         .then((result) => {
+
             console.log('created Blog Post', result)
         })
         .catch((error) => {
             console.log(error)
         })
+    }, 10000)
 
 
+console.log('redirecting now')
     res.redirect('/')
 })
 
