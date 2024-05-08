@@ -24,12 +24,12 @@ mongoose.connect('mongodb://localhost/Blog');
 
 var id = "66394a6bfefd43a913c6c8d8";
 
-BlogPost.findByIdAndDelete(id)
-    .then((result) => {
-        console.log(result)
-    })
-    .catch((error) => {
-        console.log(error)
-    })
+// BlogPost.findByIdAndDelete(id)
+//     .then((result) => {
+//         console.log(result)
+//     })
+//     .catch((error) => {
+//         console.log(error)
+//     })
 
 
