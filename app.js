@@ -32,7 +32,7 @@ app.use("*", (req, res, next) => {
     next();
 });
 
-mongoose.connect('mongodb+srv://jousefaly3:0000@mymongodbcluster.4kcckcm.mongodb.net/?retryWrites=true&w=majority&appName=MyMongoDbCluster');
+mongoose.connect('mongodb+srv://jousefaly3:0000@mymongodbcluster.4kcckcm.mongodb.net/Blog');
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
