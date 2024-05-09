@@ -10,8 +10,8 @@ const NewPostController = require('./Controllers/NewPost');
 const NewUserController = require('./Controllers/NewUserController');
 const StoreUserController = require('./controllers/StoreUserController');
 
-const LoginController = require('./controllers/Login');
-const LoginUserController = require('./controllers/LoginUser');
+const LoginController = require('./Controllers/Login');
+const LoginUserController = require('./Controllers/LoginUser');
 const LogoutController = require('./controllers/Logout');
 
 const authenticationMiddleware = require('./Middleware/AuthenticationMiddleware');
