@@ -12,13 +12,25 @@ const StoreUserController = require('./controllers/StoreUserController');
 
 const LoginController = require('./controllers/Login');
 const LoginUserController = require('./controllers/LoginUser');
+const LogoutController = require('./controllers/Logout');
+
+const authenticationMiddleware = require('./Middleware/AuthenticationMiddleware');
 
 const app = new express();
 
+
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(expressSession({secret: 'keyboard cat'}));
+app.use(expressSession({ secret: 'keyboard cat' }));
 
+global.loggedIn = null;
+
+app.use("*", (req,res,next) =>{
+    loggedIn = req.session.userId;
+    next();
+});
 
 mongoose.connect('mongodb://localhost/Blog');
 
@@ -28,6 +40,8 @@ app.use(express.static('public'));
 
 app.get('/auth/register', NewUserController);
 app.post('/users/register', StoreUserController);
+
+app.get('/auth/logout', LogoutController);
 
 app.get('/auth/login', LoginController);
 app.post('/users/login', LoginUserController);
@@ -56,9 +70,10 @@ app.get('/post/:id', async (req, res) => {
     });
 })
 
-app.get('/posts/new', NewPostController);
 
-app.post('/posts/store', async (req, res) => {
+app.get('/posts/new', authenticationMiddleware, NewPostController);
+
+app.post('/posts/store', authenticationMiddleware, async (req, res) => {
     console.log('received request body from html form.  ', req.body);
 
     BlogPost.create(req.body)
