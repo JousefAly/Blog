@@ -27,7 +27,7 @@ app.use(expressSession({ secret: 'keyboard cat' }));
 
 global.loggedIn = null;
 
-app.use("*", (req,res,next) =>{
+app.use("*", (req, res, next) => {
     loggedIn = req.session.userId;
     next();
 });
@@ -47,7 +47,11 @@ app.get('/auth/login', LoginController);
 app.post('/users/login', LoginUserController);
 
 app.get('/', async (req, res) => {
-    const blogPosts = await BlogPost.find({});
+    var blogPosts;
+    if (loggedIn)
+        blogPosts = await BlogPost.find({ userId: req.session.userId });
+    else
+        blogPosts = await BlogPost.find({});
     console.log(blogPosts);
     console.log(req.session);
     res.render('index', {
@@ -76,7 +80,12 @@ app.get('/posts/new', authenticationMiddleware, NewPostController);
 app.post('/posts/store', authenticationMiddleware, async (req, res) => {
     console.log('received request body from html form.  ', req.body);
 
-    BlogPost.create(req.body)
+    BlogPost.create({
+        title: req.body.title,
+        body: req.body.body,
+        userId: req.session.userId
+
+    })
         .then((result) => {
             console.log('result from create: ', result)
         })
