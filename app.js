@@ -8,11 +8,11 @@ const expressSession = require('express-session');
 
 const NewPostController = require('./Controllers/NewPost');
 const NewUserController = require('./Controllers/NewUserController');
-const StoreUserController = require('./controllers/StoreUserController');
+const StoreUserController = require('./Controllers/StoreUserController');
 
 const LoginController = require('./Controllers/Login');
 const LoginUserController = require('./Controllers/LoginUser');
-const LogoutController = require('./controllers/Logout');
+const LogoutController = require('./Controllers/Logout');
 
 const authenticationMiddleware = require('./Middleware/AuthenticationMiddleware');
 
