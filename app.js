@@ -49,9 +49,13 @@ app.post('/users/login', LoginUserController);
 app.get('/', async (req, res) => {
     var blogPosts;
     if (loggedIn)
-        blogPosts = await BlogPost.find({ userId: req.session.userId });
+        blogPosts = await BlogPost
+            .find({ userId: req.session.userId })
+            .populate('userId');
     else
-        blogPosts = await BlogPost.find({});
+        blogPosts = await BlogPost
+            .find({})
+            .populate('userId');
     console.log(blogPosts);
     console.log(req.session);
     res.render('index', {
@@ -83,8 +87,8 @@ app.post('/posts/store', authenticationMiddleware, async (req, res) => {
     BlogPost.create({
         title: req.body.title,
         body: req.body.body,
-        userId: req.session.userId
-
+        userId: req.session.userId,
+        datePosted: new Date()
     })
         .then((result) => {
             console.log('result from create: ', result)
