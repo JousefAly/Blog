@@ -9,6 +9,9 @@ const NewPostController = require('./Controllers/NewPost');
 const NewUserController = require('./Controllers/NewUserController');
 const StoreUserController = require('./controllers/StoreUserController');
 
+const LoginController = require('./controllers/Login');
+const LoginUserController = require('./controllers/LoginUser');
+
 const app = new express();
 
 app.use(bodyParser.json());
@@ -23,6 +26,9 @@ app.use(express.static('public'));
 
 app.get('/auth/register', NewUserController);
 app.post('/users/register', StoreUserController);
+
+app.get('/auth/login', LoginController);
+app.post('/users/login', LoginUserController);
 
 app.get('/', async (req, res) => {
     const blogPosts = await BlogPost.find({});
