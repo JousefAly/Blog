@@ -4,6 +4,7 @@ const ejs = require('ejs');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const BlogPost = require('./Models/BlogPost');
+const expressSession = require('express-session');
 
 const NewPostController = require('./Controllers/NewPost');
 const NewUserController = require('./Controllers/NewUserController');
@@ -16,6 +17,7 @@ const app = new express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(expressSession({secret: 'keyboard cat'}));
 
 
 mongoose.connect('mongodb://localhost/Blog');
@@ -33,7 +35,7 @@ app.post('/users/login', LoginUserController);
 app.get('/', async (req, res) => {
     const blogPosts = await BlogPost.find({});
     console.log(blogPosts);
-
+    console.log(req.session);
     res.render('index', {
         blogPosts
     });

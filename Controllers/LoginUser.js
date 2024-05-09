@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
                 res.redirect('/auth/login');
 
             else{
-                //store user session
+                req.session.userId = user._id;
                 console.log('user logined ', username)
                 res.redirect('/')
             }        
