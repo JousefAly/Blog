@@ -50,7 +50,7 @@ app.get('/', async (req, res) => {
     var blogPosts;
     if (loggedIn)
         blogPosts = await BlogPost
-            .find({ userId: req.session.userId })
+            .find({})
             .populate('userId');
     else
         blogPosts = await BlogPost
